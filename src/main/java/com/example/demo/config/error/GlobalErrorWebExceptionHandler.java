@@ -1,4 +1,4 @@
-package com.example.demo.error;
+package com.example.demo.config.error;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.web.ResourceProperties;

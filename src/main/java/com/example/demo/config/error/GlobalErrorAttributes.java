@@ -1,4 +1,4 @@
-package com.example.demo.error;
+package com.example.demo.config.error;
 
 import com.example.demo.exceptions.GlobalException;
 import lombok.extern.slf4j.Slf4j;
