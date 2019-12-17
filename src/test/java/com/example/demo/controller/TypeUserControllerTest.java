@@ -1,7 +1,8 @@
 package com.example.demo.controller;
 
-import com.example.demo.config.error.GlobalErrorAttributes;
 import com.example.demo.dto.TypeUserDto;
+import com.example.demo.config.error.GlobalErrorAttributes;
+import com.example.demo.handler.TypeUserHandler;
 import com.example.demo.service.TypeUserService;
 import com.example.demo.utils.ValidateObjectHandlerConfig;
 import org.junit.jupiter.api.Test;
@@ -18,7 +19,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
 @WebFluxTest
-@Import(TypeUserController.class)
+@Import({TypeUserController.class , TypeUserHandler.class})
 public class TypeUserControllerTest {
 
     @MockBean
