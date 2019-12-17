@@ -5,6 +5,9 @@ import com.example.demo.repository.TypeUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.MonoSink;
+
+import java.util.function.Consumer;
 
 @Service
 @RequiredArgsConstructor
@@ -16,6 +19,7 @@ public class TypeUserService {
     }
 
     public Mono<TypeUserDto> findByName(String name) {
-        return this.findByName(name);
+        return this.typeUserRepository.findByName(name);
     }
+
 }
