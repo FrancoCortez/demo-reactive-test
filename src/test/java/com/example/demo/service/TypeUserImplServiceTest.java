@@ -1,8 +1,8 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.TypeUserDto;
+import com.example.demo.model.TypeUserModel;
 import com.example.demo.repository.TypeUserRepository;
-import com.example.demo.service.impl.TypeUserImplService;
+import com.example.demo.service.domain.TypeUserService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,25 +19,26 @@ public class TypeUserImplServiceTest {
     @MockBean
     private TypeUserRepository typeUserRepository;
     @Autowired
-    TypeUserImplService typeUserImplService;
+    private TypeUserService typeUserService;
 
     @Test
     public void createTypeUser() {
-        TypeUserDto obj = TypeUserDto.builder()
-                .id(null)
+        TypeUserModel obj = TypeUserModel.builder()
                 .name("test")
                 .description("test description")
                 .build();
+
+        TypeUserModel objResp = TypeUserModel.builder()
+                .name("test")
+                .description("test description")
+                .build();
+        objResp.setId("1");
         Mockito.when(this.typeUserRepository.save(obj))
-                .thenReturn(Mono.justOrEmpty(TypeUserDto.builder()
-                        .id("1")
-                        .name("test")
-                        .description("test description")
-                        .build()));
-        Mono<TypeUserDto> typeUserDtoMono = this.typeUserImplService.create(obj);
-        Predicate<TypeUserDto> predicate = p -> (p.getId() != null && p.getId().equalsIgnoreCase("1")) && (p.getName().equalsIgnoreCase("test") && p.getDescription().equalsIgnoreCase("test description"));
+                .thenReturn(Mono.justOrEmpty(objResp));
+        Mono<TypeUserModel> TypeUserModelMono = this.typeUserService.create(obj);
+        Predicate<TypeUserModel> predicate = p -> (p.getId() != null && p.getId().equalsIgnoreCase("1")) && (p.getName().equalsIgnoreCase("test") && p.getDescription().equalsIgnoreCase("test description"));
         StepVerifier
-                .create(typeUserDtoMono)
+                .create(TypeUserModelMono)
                 .expectNextMatches(predicate)
                 .verifyComplete();
     }
@@ -45,14 +46,15 @@ public class TypeUserImplServiceTest {
     @Test
     public void findByName () {
         String test = "test";
+        TypeUserModel objReturn = TypeUserModel.builder()
+                .name("test")
+                .description("test description")
+                .build();
+        objReturn.setId("1");
         Mockito.when(this.typeUserRepository.findByName(test))
-                .thenReturn(Mono.justOrEmpty(TypeUserDto.builder()
-                        .id("1")
-                        .name("test")
-                        .description("test description")
-                        .build()));
-        Mono<TypeUserDto> typeUserDtoMono = this.typeUserImplService.findByName(test);
-        Predicate<TypeUserDto> predicate = t -> (t.getId() != null &&
+                .thenReturn(Mono.justOrEmpty(objReturn));
+        Mono<TypeUserModel> TypeUserModelMono = this.typeUserService.findByName(test);
+        Predicate<TypeUserModel> predicate = t -> (t.getId() != null &&
                 t.getName() != null &&
                 t.getDescription() != null &&
                 t.getId().equalsIgnoreCase("1") &&
@@ -60,7 +62,7 @@ public class TypeUserImplServiceTest {
                 t.getDescription().equalsIgnoreCase("test description")
         );
         StepVerifier
-                .create(typeUserDtoMono)
+                .create(TypeUserModelMono)
                 .expectNextMatches(predicate)
                 .verifyComplete();
     }

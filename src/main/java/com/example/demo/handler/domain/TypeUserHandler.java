@@ -1,7 +1,7 @@
-package com.example.demo.handler;
+package com.example.demo.handler.domain;
 
-import com.example.demo.dto.TypeUserDto;
-import com.example.demo.service.TypeUserService;
+import com.example.demo.model.TypeUserModel;
+import com.example.demo.service.domain.TypeUserService;
 import com.example.demo.utils.ValidateObjectHandlerConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -18,7 +18,7 @@ public class TypeUserHandler {
 
     public Mono<ServerResponse> create(final ServerRequest request) {
         return this.validateObjectHandlerConfig.requireValidBody(body -> this.typeUserService.create(body.toFuture().join())
-                        .flatMap(a -> ServerResponse.ok().body(Mono.justOrEmpty(a), TypeUserDto.class))
-                , request, TypeUserDto.class);
+                        .flatMap(a -> ServerResponse.ok().body(Mono.justOrEmpty(a), TypeUserModel.class))
+                , request, TypeUserModel.class);
     }
 }

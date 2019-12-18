@@ -1,9 +1,9 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.TypeUserDto;
 import com.example.demo.config.error.GlobalErrorAttributes;
-import com.example.demo.handler.TypeUserHandler;
-import com.example.demo.service.TypeUserService;
+import com.example.demo.handler.domain.TypeUserHandler;
+import com.example.demo.model.TypeUserModel;
+import com.example.demo.service.domain.TypeUserService;
 import com.example.demo.utils.ValidateObjectHandlerConfig;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -42,16 +42,17 @@ public class TypeUserControllerTest {
 
     @Test
     public void createTypeUser() throws Exception {
-        TypeUserDto typeUserDto = TypeUserDto.builder()
+        TypeUserModel typeUserDto = TypeUserModel.builder()
                 .name("test")
                 .description("test description")
                 .build();
+        TypeUserModel typeUserDtoResp = TypeUserModel.builder()
+                .name("test")
+                .description("test description")
+                .build();
+        typeUserDtoResp.setId("1");
         Mockito.when(this.typeUserService.create(typeUserDto))
-                .thenReturn(Mono.just(TypeUserDto.builder()
-                        .id("1")
-                        .name("test")
-                        .description("test description")
-                        .build()));
+                .thenReturn(Mono.just(typeUserDtoResp));
 
         this.client.post()
                 .uri("/test")
@@ -68,16 +69,18 @@ public class TypeUserControllerTest {
 
     @Test
     public void createTypeUserOnNamedNull() throws Exception {
-        TypeUserDto typeUserDto = TypeUserDto.builder()
+        TypeUserModel typeUserDto = TypeUserModel.builder()
                 .name(null)
                 .description("test description")
                 .build();
+        TypeUserModel typeUserDtoResp = TypeUserModel.builder()
+                .name(null)
+                .description("test description")
+                .build();
+        typeUserDtoResp.setId("1");
+        typeUserDtoResp.setId("1");
         Mockito.when(this.typeUserService.create(typeUserDto))
-                .thenReturn(Mono.just(TypeUserDto.builder()
-                        .id("1")
-                        .name(null)
-                        .description("test description")
-                        .build()));
+                .thenReturn(Mono.just(typeUserDtoResp));
 
         this.client.post()
                 .uri("/test")

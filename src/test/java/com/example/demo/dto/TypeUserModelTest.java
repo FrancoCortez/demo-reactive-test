@@ -1,15 +1,15 @@
 package com.example.demo.dto;
 
+import com.example.demo.model.TypeUserModel;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TypeUserDtoTest {
+public class TypeUserModelTest {
 
     @Test
     public void createObjectTest() throws Exception {
-        TypeUserDto object = TypeUserDto.builder()
-                .id(null)
+        TypeUserModel object = TypeUserModel.builder()
                 .name("test name")
                 .description("description test")
                 .build();
