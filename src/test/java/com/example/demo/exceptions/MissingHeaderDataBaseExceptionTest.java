@@ -21,7 +21,7 @@ class MissingHeaderDataBaseExceptionTest {
     @Test
     public void createObjectTestWithThrow() throws Exception {
         Exception ex = new Exception("ola");
-        MissingHeaderDataBaseException object = new MissingHeaderDataBaseException(HttpStatus.BAD_REQUEST, "ola", ex );
+        MissingHeaderDataBaseException object = new MissingHeaderDataBaseException(HttpStatus.BAD_REQUEST, "ola", ex);
         assertAll("dto",
                 () -> assertNotNull(object),
                 () -> assertEquals("400 BAD_REQUEST \"ola\"; nested exception is java.lang.Exception: ola", object.getMessage()),
@@ -31,7 +31,7 @@ class MissingHeaderDataBaseExceptionTest {
 
     @Test
     public void createObjectTestWithMessage() throws Exception {
-        MissingHeaderDataBaseException object = new MissingHeaderDataBaseException("ola" );
+        MissingHeaderDataBaseException object = new MissingHeaderDataBaseException("ola");
         assertAll("dto",
                 () -> assertNotNull(object),
                 () -> assertEquals("400 BAD_REQUEST \"ola\"", object.getMessage()),
@@ -42,7 +42,7 @@ class MissingHeaderDataBaseExceptionTest {
     @Test
     public void createObjectTestWithMessageWithException() throws Exception {
         Exception ex = new Exception("ola");
-        MissingHeaderDataBaseException object = new MissingHeaderDataBaseException("ola", ex );
+        MissingHeaderDataBaseException object = new MissingHeaderDataBaseException("ola", ex);
 
         assertAll("dto",
                 () -> assertNotNull(object),

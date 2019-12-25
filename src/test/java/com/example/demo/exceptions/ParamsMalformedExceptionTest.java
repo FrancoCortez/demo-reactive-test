@@ -21,7 +21,7 @@ class ParamsMalformedExceptionTest {
     @Test
     public void createObjectTestWithThrow() throws Exception {
         Exception ex = new Exception("ola");
-        ParamsMalformedException object = new ParamsMalformedException(HttpStatus.BAD_REQUEST, "ola", ex );
+        ParamsMalformedException object = new ParamsMalformedException(HttpStatus.BAD_REQUEST, "ola", ex);
         assertAll("dto",
                 () -> assertNotNull(object),
                 () -> assertEquals("400 BAD_REQUEST \"ola\"; nested exception is java.lang.Exception: ola", object.getMessage()),
@@ -31,7 +31,7 @@ class ParamsMalformedExceptionTest {
 
     @Test
     public void createObjectTestWithMessage() throws Exception {
-        ParamsMalformedException object = new ParamsMalformedException("ola" );
+        ParamsMalformedException object = new ParamsMalformedException("ola");
         assertAll("dto",
                 () -> assertNotNull(object),
                 () -> assertEquals("400 BAD_REQUEST \"ola\"", object.getMessage()),
@@ -42,7 +42,7 @@ class ParamsMalformedExceptionTest {
     @Test
     public void createObjectTestWithMessageWithException() throws Exception {
         Exception ex = new Exception("ola");
-        ParamsMalformedException object = new ParamsMalformedException("ola", ex );
+        ParamsMalformedException object = new ParamsMalformedException("ola", ex);
 
         assertAll("dto",
                 () -> assertNotNull(object),

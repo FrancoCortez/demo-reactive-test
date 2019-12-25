@@ -1,8 +1,9 @@
 package com.example.demo.controller;
 
 import com.example.demo.config.error.GlobalErrorAttributes;
+import com.example.demo.controller.domain.TypeUserController;
 import com.example.demo.handler.domain.TypeUserHandler;
-import com.example.demo.model.TypeUserModel;
+import com.example.demo.model.domain.TypeUserModel;
 import com.example.demo.service.domain.TypeUserService;
 import com.example.demo.utils.ValidateObjectHandlerConfig;
 import org.junit.jupiter.api.Test;
@@ -18,8 +19,10 @@ import org.springframework.test.context.event.annotation.BeforeTestMethod;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 @WebFluxTest
-@Import({TypeUserController.class , TypeUserHandler.class})
+@Import({TypeUserController.class, TypeUserHandler.class})
 public class TypeUserControllerTest {
 
     @MockBean
@@ -50,7 +53,7 @@ public class TypeUserControllerTest {
                 .name("test")
                 .description("test description")
                 .build();
-        typeUserDtoResp.setId("1");
+        typeUserDtoResp.setId(UUID.fromString("1"));
         Mockito.when(this.typeUserService.create(typeUserDto))
                 .thenReturn(Mono.just(typeUserDtoResp));
 
@@ -77,8 +80,8 @@ public class TypeUserControllerTest {
                 .name(null)
                 .description("test description")
                 .build();
-        typeUserDtoResp.setId("1");
-        typeUserDtoResp.setId("1");
+        typeUserDtoResp.setId(UUID.fromString("1"));
+        typeUserDtoResp.setId(UUID.fromString("1"));
         Mockito.when(this.typeUserService.create(typeUserDto))
                 .thenReturn(Mono.just(typeUserDtoResp));
 

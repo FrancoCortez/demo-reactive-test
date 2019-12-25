@@ -18,7 +18,7 @@ public class GlobalExceptionTest {
                 () -> assertEquals(HttpStatus.OK, object.getStatus())
         );
         Exception exception = new Exception("testing exeception");
-        GlobalException objectFull = new GlobalException(HttpStatus.BAD_REQUEST, "ola", exception );
+        GlobalException objectFull = new GlobalException(HttpStatus.BAD_REQUEST, "ola", exception);
         assertAll("dto",
                 () -> assertNotNull(objectFull),
                 () -> assertEquals("400 BAD_REQUEST \"ola\"; nested exception is java.lang.Exception: testing exeception", objectFull.getMessage()),

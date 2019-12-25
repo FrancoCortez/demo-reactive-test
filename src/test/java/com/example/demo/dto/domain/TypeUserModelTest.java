@@ -1,6 +1,6 @@
-package com.example.demo.dto;
+package com.example.demo.dto.domain;
 
-import com.example.demo.model.TypeUserModel;
+import com.example.demo.model.domain.TypeUserModel;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

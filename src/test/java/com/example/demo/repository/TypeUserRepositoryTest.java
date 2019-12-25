@@ -1,10 +1,11 @@
 package com.example.demo.repository;
 
-import com.example.demo.model.TypeUserModel;
+import com.example.demo.model.domain.TypeUserModel;
+import com.example.demo.repository.domain.TypeUserRepository;
 import org.junit.jupiter.api.Test;
 import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.event.annotation.BeforeTestExecution;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
@@ -12,7 +13,7 @@ import reactor.test.StepVerifier;
 import java.util.function.Predicate;
 
 
-@DataMongoTest
+@SpringBootTest
 public class TypeUserRepositoryTest {
 
     @Autowired

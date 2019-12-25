@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
-import com.example.demo.model.TypeUserModel;
-import com.example.demo.repository.TypeUserRepository;
+import com.example.demo.model.domain.TypeUserModel;
+import com.example.demo.repository.domain.TypeUserRepository;
 import com.example.demo.service.domain.TypeUserService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -11,6 +11,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.util.UUID;
 import java.util.function.Predicate;
 
 @SpringBootTest
@@ -32,11 +33,11 @@ public class TypeUserImplServiceTest {
                 .name("test")
                 .description("test description")
                 .build();
-        objResp.setId("1");
+        objResp.setId(UUID.fromString("1"));
         Mockito.when(this.typeUserRepository.save(obj))
                 .thenReturn(Mono.justOrEmpty(objResp));
         Mono<TypeUserModel> TypeUserModelMono = this.typeUserService.create(obj);
-        Predicate<TypeUserModel> predicate = p -> (p.getId() != null && p.getId().equalsIgnoreCase("1")) && (p.getName().equalsIgnoreCase("test") && p.getDescription().equalsIgnoreCase("test description"));
+        Predicate<TypeUserModel> predicate = p -> (p.getId() != null && p.getId().equals(UUID.fromString("1"))) && (p.getName().equalsIgnoreCase("test") && p.getDescription().equalsIgnoreCase("test description"));
         StepVerifier
                 .create(TypeUserModelMono)
                 .expectNextMatches(predicate)
@@ -44,20 +45,20 @@ public class TypeUserImplServiceTest {
     }
 
     @Test
-    public void findByName () {
+    public void findByName() {
         String test = "test";
         TypeUserModel objReturn = TypeUserModel.builder()
                 .name("test")
                 .description("test description")
                 .build();
-        objReturn.setId("1");
+        objReturn.setId(UUID.fromString("1"));
         Mockito.when(this.typeUserRepository.findByName(test))
                 .thenReturn(Mono.justOrEmpty(objReturn));
         Mono<TypeUserModel> TypeUserModelMono = this.typeUserService.findByName(test);
         Predicate<TypeUserModel> predicate = t -> (t.getId() != null &&
                 t.getName() != null &&
                 t.getDescription() != null &&
-                t.getId().equalsIgnoreCase("1") &&
+                t.getId().equals(UUID.fromString("1")) &&
                 t.getName().equalsIgnoreCase("test") &&
                 t.getDescription().equalsIgnoreCase("test description")
         );

@@ -22,7 +22,7 @@ class MissingParameterExceptionTest {
     @Test
     public void createObjectTestWithThrow() throws Exception {
         Exception ex = new Exception("ola");
-        MissingParameterException object = new MissingParameterException(HttpStatus.BAD_REQUEST, "ola", ex );
+        MissingParameterException object = new MissingParameterException(HttpStatus.BAD_REQUEST, "ola", ex);
         assertAll("dto",
                 () -> assertNotNull(object),
                 () -> assertEquals("400 BAD_REQUEST \"ola\"; nested exception is java.lang.Exception: ola", object.getMessage()),
@@ -32,7 +32,7 @@ class MissingParameterExceptionTest {
 
     @Test
     public void createObjectTestWithMessage() throws Exception {
-        MissingParameterException object = new MissingParameterException("ola" );
+        MissingParameterException object = new MissingParameterException("ola");
         assertAll("dto",
                 () -> assertNotNull(object),
                 () -> assertEquals("400 BAD_REQUEST \"ola\"", object.getMessage()),
@@ -43,7 +43,7 @@ class MissingParameterExceptionTest {
     @Test
     public void createObjectTestWithMessageWithException() throws Exception {
         Exception ex = new Exception("ola");
-        MissingParameterException object = new MissingParameterException("ola", ex );
+        MissingParameterException object = new MissingParameterException("ola", ex);
 
         assertAll("dto",
                 () -> assertNotNull(object),

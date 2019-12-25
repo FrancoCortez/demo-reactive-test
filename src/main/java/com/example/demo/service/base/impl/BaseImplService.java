@@ -1,72 +1,83 @@
 package com.example.demo.service.base.impl;
 
 import com.example.demo.exceptions.MissingParameterException;
+import com.example.demo.exceptions.NotFoundException;
 import com.example.demo.exceptions.ObjectMalformedException;
 import com.example.demo.model.base.BaseIdModel;
 import com.example.demo.service.base.BaseService;
-import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.cassandra.repository.ReactiveCassandraRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.lang.reflect.MalformedParameterizedTypeException;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
-public class BaseImplService<T extends BaseIdModel, ID extends String> implements BaseService<T, ID> {
-    private ReactiveMongoRepository<T, ID> tidReactiveMongoRepository;
+@Slf4j
+public class BaseImplService<T extends BaseIdModel, ID extends UUID> implements BaseService<T, ID> {
+    private ReactiveCassandraRepository<T, ID> tidReactiveCassandraRepository;
     private Class<T> type;
 
-    public BaseImplService(ReactiveMongoRepository<T, ID> tidReactiveMongoRepository, Class<T> type) {
-        this.tidReactiveMongoRepository = tidReactiveMongoRepository;
+    public BaseImplService(ReactiveCassandraRepository<T, ID> tidReactiveCassandraRepository, Class<T> type) {
+        this.tidReactiveCassandraRepository = tidReactiveCassandraRepository;
         this.type = type;
     }
 
     public Mono<T> create(T object) {
-        if (object == null) {
-            throw new ObjectMalformedException("El objecto de entrada es null");
-        }
-        return this.tidReactiveMongoRepository.save(object);
+        if (object == null) throw new ObjectMalformedException("El objecto de entrada es null");
+        object.setId(UUID.randomUUID());
+        object.setCreatedDate(LocalDateTime.now());
+        object.setCreateBy("LEGACY");
+        return this.tidReactiveCassandraRepository.save(object);
+    }
+
+    public Flux<T> createAll(Flux<T> objects) {
+        if (objects == null) throw new ObjectMalformedException("La lista de entidades se encuentra vacia");
+        return this.tidReactiveCassandraRepository.saveAll(objects.map(mapper -> {
+            mapper.setId(UUID.randomUUID());
+            mapper.setCreatedDate(LocalDateTime.now());
+            mapper.setCreateBy("LEGACY");
+            return mapper;
+        }));
     }
 
     public Mono<T> update(T object, ID id) {
-        if (object == null) {
-            throw new ObjectMalformedException("El objecto de entrada es null");
-        }
-        if (id == null || id.isEmpty()) {
+        if (object == null) throw new ObjectMalformedException("El objecto de entrada es null");
+        if (id == null)
             throw new MissingParameterException("El parametro de busqueda para la edicion no es valido");
-        }
-        return this.tidReactiveMongoRepository.findById(id)
+        return this.findById(id)
                 .flatMap(map -> {
                     object.setId(map.getId());
-                    return this.tidReactiveMongoRepository.save(object);
+                    object.setCreateBy(map.getCreateBy());
+                    object.setCreatedDate(map.getCreatedDate());
+                    return this.tidReactiveCassandraRepository.save(object);
                 });
     }
 
     public Mono<Void> deleteById(ID id) {
-        if (id == null || id.isEmpty()) {
-            throw new MissingParameterException("El parametro de busqueda es invalido");
-        }
-        return this.tidReactiveMongoRepository.deleteById(id);
+        if (id == null) throw new MissingParameterException("El parametro de busqueda es invalido");
+        return this.tidReactiveCassandraRepository.deleteById(id);
     }
 
     public Mono<Void> deleteAll() {
-        return this.tidReactiveMongoRepository.deleteAll();
+        return this.tidReactiveCassandraRepository.deleteAll();
     }
 
     public Flux<T> findAll() {
-        return this.tidReactiveMongoRepository.findAll();
+        return this.tidReactiveCassandraRepository.findAll();
     }
 
     public Mono<T> findById(ID id) {
-        if (id == null || id.isEmpty()) {
-            throw new MissingParameterException("El parametro de busqueda es invalido");
-        }
-        return this.tidReactiveMongoRepository.findById(id);
+        if (id == null) throw new MissingParameterException("El parametro de busqueda es invalido");
+        return this.tidReactiveCassandraRepository.findById(id)
+                .switchIfEmpty(Mono.defer(() -> Mono.error(new NotFoundException("El id [" + id + "] no se encontro dentro de la base de datos"))));
     }
 
     public Flux<T> findByAllId(List<ID> ids) {
-        if (ids == null || ids.isEmpty()) {
+        if (ids == null || ids.isEmpty())
             throw new MalformedParameterizedTypeException("Las ids seleccionadas no son validas para la busqueda masiva");
-        }
-        return this.tidReactiveMongoRepository.findAllById(ids);
+        return this.tidReactiveCassandraRepository.findAllById(ids);
     }
 }

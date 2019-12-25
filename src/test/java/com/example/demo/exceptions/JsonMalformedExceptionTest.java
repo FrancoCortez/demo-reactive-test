@@ -21,7 +21,7 @@ public class JsonMalformedExceptionTest {
     @Test
     public void createObjectTestWithThrow() throws Exception {
         Exception ex = new Exception("ola");
-        JsonMalformedException object = new JsonMalformedException(HttpStatus.BAD_REQUEST, "ola", ex );
+        JsonMalformedException object = new JsonMalformedException(HttpStatus.BAD_REQUEST, "ola", ex);
         assertAll("dto",
                 () -> assertNotNull(object),
                 () -> assertEquals("400 BAD_REQUEST \"ola\"; nested exception is java.lang.Exception: ola", object.getMessage()),
@@ -31,7 +31,7 @@ public class JsonMalformedExceptionTest {
 
     @Test
     public void createObjectTestWithMessage() throws Exception {
-        JsonMalformedException object = new JsonMalformedException("ola" );
+        JsonMalformedException object = new JsonMalformedException("ola");
         assertAll("dto",
                 () -> assertNotNull(object),
                 () -> assertEquals("400 BAD_REQUEST \"ola\"", object.getMessage()),
@@ -42,7 +42,7 @@ public class JsonMalformedExceptionTest {
     @Test
     public void createObjectTestWithMessageWithException() throws Exception {
         Exception ex = new Exception("ola");
-        JsonMalformedException object = new JsonMalformedException("ola", ex );
+        JsonMalformedException object = new JsonMalformedException("ola", ex);
 
         assertAll("dto",
                 () -> assertNotNull(object),

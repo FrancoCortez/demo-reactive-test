@@ -1,11 +1,12 @@
-package com.example.demo.model;
+package com.example.demo.model.domain;
 
+import com.example.demo.model.base.BaseIdModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.mongodb.core.mapping.Document;
-import com.example.demo.model.base.BaseIdModel;
+import org.springframework.data.cassandra.core.mapping.Indexed;
+import org.springframework.data.cassandra.core.mapping.Table;
 
 import javax.validation.constraints.NotNull;
 
@@ -13,9 +14,10 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Document("typeUser")
+@Table("type_user")
 public class TypeUserModel extends BaseIdModel {
     @NotNull
+    @Indexed
     private String name;
     private String description;
 }

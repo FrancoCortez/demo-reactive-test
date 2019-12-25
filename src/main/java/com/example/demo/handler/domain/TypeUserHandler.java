@@ -1,24 +1,26 @@
 package com.example.demo.handler.domain;
 
-import com.example.demo.model.TypeUserModel;
+import com.example.demo.handler.base.BaseHandler;
+import com.example.demo.model.domain.ProfileModel;
+import com.example.demo.model.domain.TypeUserModel;
 import com.example.demo.service.domain.TypeUserService;
-import com.example.demo.utils.ValidateObjectHandlerConfig;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 @Component
-@RequiredArgsConstructor
-public class TypeUserHandler {
-
+public class TypeUserHandler extends BaseHandler<TypeUserModel, UUID> {
     private final TypeUserService typeUserService;
-    private final ValidateObjectHandlerConfig validateObjectHandlerConfig;
 
-    public Mono<ServerResponse> create(final ServerRequest request) {
-        return this.validateObjectHandlerConfig.requireValidBody(body -> this.typeUserService.create(body.toFuture().join())
-                        .flatMap(a -> ServerResponse.ok().body(Mono.justOrEmpty(a), TypeUserModel.class))
-                , request, TypeUserModel.class);
+    public TypeUserHandler(final TypeUserService typeUserService) {
+        super(typeUserService, TypeUserModel.class);
+        this.typeUserService = typeUserService;
+    }
+    public Mono<ServerResponse> findByName (final ServerRequest request) {
+        String name = request.pathVariable("name");
+        return ServerResponse.ok().body(this.typeUserService.findByName(name), TypeUserModel.class);
     }
 }
